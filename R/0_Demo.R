@@ -15,51 +15,108 @@ rm(list = ls())
 if (!requireNamespace("rplum", quietly = TRUE)) install.packages("rplum")
 if (!requireNamespace("rbacon", quietly = TRUE)) install.packages("rbacon")
 if (!requireNamespace("rintcal", quietly = TRUE)) install.packages("rintcal")
-if (!requireNamespace("ggplot2", quietly = TRUE)) install.packages("ggplot2")
+if (!requireNamespace("tidyverse", quietly = TRUE)) install.packages("ggplot2")
 
 # Load packages into your environment
 library("rplum")
 library("rbacon")
 library("rintcal")
-library("ggplot2")
-
-#Define name of core
-core_name <- "PIECore2"
+library("tidyverse")
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# 2.0 Demo core ----------------------------------------------------------------
+# 2.0 Run demo from package-----------------------------------------------------
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#Create folder structure ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#Define Core name
+core_name <- "test"
+
 #Plum runs folder
 if (!dir.exists("Plum_runs")) dir.create("Plum_runs")
 
 # Core-specific subfolder
 if (!dir.exists(paste0("Plum_runs/", core_name))) dir.create(paste0("Plum_runs/", core_name))
 
-# Find and copy core data files
-files_to_copy <- list.files("data", pattern = core_name, full.names = TRUE)
-file.copy(files_to_copy, paste0("Plum_runs/", core_name))
-list.files(paste0("Plum_runs/", core_name))
+#write csv to 
+mycore <- read.csv(system.file("extdata/Cores/HP1C/HP1C.csv", package="rplum"))
+write.csv(mycore, paste0("Plum_runs/", core_name,"/",core_name,".csv"), row.names=F)
 
-#Move over auxilerary data (mannually)
-file.copy("data/Cs137Data2.csv", paste0("Plum_runs/", core_name))
+#Initilize file structure
+Plum(core = "test", date.sample = 2018, n.supp=3, ra.case=0)
 
-#Define core data
-myCRS <- read.table(paste0("Plum_runs/",core_name, "/", "CRS_CIC_ResultsPIECore2.txt"))
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# 3.0 Run PIE1 Core-------------------------------------------------------------
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#Define Core name
+core_name <- "PIECore1"
 
-#Run PLUM model ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#Run PLUM model on core
-Plum(
-  core = "PIECore2", 
-  otherdates = "Cs137Data2.csv", 
-  ra.case = 0, 
-  n.supp = 3, 
-  date.sample = 2015.5)
+#Create plum runs folder
+if (!dir.exists("Plum_runs")) dir.create("Plum_runs")
 
-#Finish Plot
-agedepth(set = info,
-         pb.lim = c(),  # This removes the Pb-210 axis
-         plot.pb = FALSE,  # This excludes the Pb-210 data points
-)
-lines(myCRS$V1,myCRS$V2,lwd=3, col = "orange")
-lines(myCRS$V1,myCRS$V4,lwd=3, col = "blue")
+#Create Core-specific subfolder
+if (!dir.exists(paste0("Plum_runs/", core_name))) dir.create(paste0("Plum_runs/", core_name))
+
+#write csv to 
+mycore <- read.csv('data/PIECore1.csv')
+write.csv(mycore, paste0("Plum_runs/", core_name,"/",core_name,".csv"), row.names=F)
+
+#Initilize file structure
+Plum(core = core_name, date.sample = 2015.5, n.supp=3, ra.case=0)
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# 4.0 Run PIE2 Core-------------------------------------------------------------
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#Define Core name
+core_name <- "PIECore2"
+
+#Create plum runs folder
+if (!dir.exists("Plum_runs")) dir.create("Plum_runs")
+
+#Create Core-specific subfolder
+if (!dir.exists(paste0("Plum_runs/", core_name))) dir.create(paste0("Plum_runs/", core_name))
+
+#write csv to 
+mycore <- read.csv('data/PIECore2.csv')
+mycore <- mycore %>% slice(1:40)
+write.csv(mycore, paste0("Plum_runs/", core_name,"/",core_name,".csv"), row.names=F)
+
+#Initilize file structure
+Plum(core = core_name, date.sample = 2015.5, n.supp=3, ra.case=0)
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# 5.0 Run PIE7 Core-------------------------------------------------------------
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#Define Core name
+core_name <- "PIECore7"
+
+#Create plum runs folder
+if (!dir.exists("Plum_runs")) dir.create("Plum_runs")
+
+#Create Core-specific subfolder
+if (!dir.exists(paste0("Plum_runs/", core_name))) dir.create(paste0("Plum_runs/", core_name))
+
+#write csv to 
+mycore <- read.csv('data/PIECore7.csv')
+write.csv(mycore, paste0("Plum_runs/", core_name,"/",core_name,".csv"), row.names=F)
+
+#Initilize file structure
+Plum(core = core_name, date.sample = 2015.5, n.supp=3, ra.case=0)
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# 6.0 Run PIE8 Core-------------------------------------------------------------
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#Define Core name
+core_name <- "PIECore8"
+
+#Create plum runs folder
+if (!dir.exists("Plum_runs")) dir.create("Plum_runs")
+
+#Create Core-specific subfolder
+if (!dir.exists(paste0("Plum_runs/", core_name))) dir.create(paste0("Plum_runs/", core_name))
+
+#write csv to 
+mycore <- read.csv('data/PIECore8.csv')
+write.csv(mycore, paste0("Plum_runs/", core_name,"/",core_name,".csv"), row.names=F)
+
+#Initilize file structure
+Plum(core = core_name, date.sample = 2015.5, n.supp=3, ra.case=0)
+
